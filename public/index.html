@@ -31,15 +31,16 @@
 
 
       <p>Find the Perfect Meeting Place</p>
+      
 
       <button onclick="getLocation()">Get Coordinates</button>
       <textbox id="output"></textbox>
       
       <p id="demo"></p>
       
-      <input name="name" id="name" placeholder="name">
-      <input type="number" name="latitude" id="latitude" placeholder="latitude">
-      <input type="number" name="longitude" id="longitude" placeholder="longitude">
+      <input name="name" id="name" placeholder="Name">
+      <input type="number" name="latitude" id="latitude" placeholder="Latitude">
+      <input type="number" name="longitude" id="longitude" placeholder="Longitude">
       <button onclick="getMidpoint()">Get Midpoint</button>
         <textbox id="total"></textbox>
       
@@ -47,6 +48,14 @@
       <input type = "string" name = "name2" id = "name2" placeholder = "Person name">
       <input type = "string" name = "destination" id="destination" placeholder="Restaurant Name">
       <button onclick="getRoute()">Get Route</button>  
+
+      <p></p>
+      <input id="finalLat" placeholder="Latitude">
+      <input id="finalLon" placeholder="Longitude">
+      <button onclick="getAllDistances()">Get All Distances</button>
+      <p></p>
+      <textbox id="final"></textbox>
+
         
         
         <script>
@@ -96,7 +105,7 @@
         var result = "Map".link(temp)
         var temp2 = "https://www.google.com/maps/search/Restaurants/@" + averageLat + "," + averageLon + ",13z/data=!3m1!4b1!4m7!2m6!3m5!1sRestaurants!"
         var result2 = "Nearby Restaurants".link(temp2)
-        document.getElementById("total").innerHTML = personArray + "Your " + numPeople + "-person group has an average latitude of " + averageLat + " and an average longitude of " + averageLon + ". " + result + "       " + result2
+        document.getElementById("total").innerHTML = "Your " + numPeople + "-person group has an average latitude of " + averageLat + " and an average longitude of " + averageLon + ". " + result + "       " + result2
       }
           
           
@@ -114,6 +123,64 @@
         var a = personArray.indexOf(document.getElementById("name2").value)
             window.open("https://www.google.com/maps/dir/" + latArray[a] + ",+" + lonArray[a] + "/" + str2, '_blank')
       
+      }
+
+      function getAllDistances(){
+        var latAddress = document.getElementById("finalLat").value
+        var lonAddress = document.getElementById("finalLon").value
+        var distanceArray = []
+        var finalSentence = ""
+        for (var i = 0; i < personArray.length; i++){
+          distanceArray.push([distance(latArray[i], lonArray[i], latAddress, lonAddress), personArray[i]])
+        }
+        bubble_Sort(distanceArray[0])
+        for (i = 0; i < personArray.length; i++){
+          finalSentence += distanceArray[i][1] + " is " + distanceArray[i][0] + " miles away; "
+        }
+        document.getElementById("final").innerHTML = finalSentence
+      }
+
+
+      function distance(lat1, lon1, lat2, lon2) {
+	      if ((lat1 == lat2) && (lon1 == lon2)) {
+		      return 0;
+	      }
+        else {
+          var radlat1 = Math.PI * lat1/180;
+          var radlat2 = Math.PI * lat2/180;
+          var theta = lon1-lon2;
+          var radtheta = Math.PI * theta/180;
+          var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+          if (dist > 1) {
+            dist = 1;
+          }
+          dist = Math.acos(dist);
+          dist = dist * 180/Math.PI;
+          dist = dist * 60 * 1.1515;
+          return dist;
+        }
+      }
+
+      function bubble_Sort(a)
+      {
+          var swapp;
+          var n = a.length-1;
+          var x=a;
+          do {
+              swapp = false;
+              for (var i=0; i < n; i++)
+              {
+                  if (x[i] < x[i+1])
+                  {
+                    var temp = x[i];
+                    x[i] = x[i+1];
+                    x[i+1] = temp;
+                    swapp = true;
+                  }
+              }
+              n--;
+          } while (swapp);
+      return x; 
       }
       </script>
       
