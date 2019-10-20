@@ -30,18 +30,21 @@
 
 
 
-      <p>Click the button to get your coordinates.</p>
+      <p>Find the Perfect Meeting Place</p>
 
       <button onclick="getLocation()">Get Coordinates</button>
+      <textbox id="output"></textbox>
       
       <p id="demo"></p>
-        
-      <button onclick="getMidpoint()">Get Midpoint</button>
+      
+      <input name="name" id="name" placeholder="name">
       <input type="number" name="latitude" id="latitude" placeholder="latitude">
       <input type="number" name="longitude" id="longitude" placeholder="longitude">
+      <button onclick="getMidpoint()">Get Midpoint</button>
         <textbox id="total"></textbox>
       
-        <div>
+        <p></p>
+      <input type = "string" name = "name2" id = "name2" placeholder = "Person name">
       <input type = "string" name = "destination" id="destination" placeholder="Restaurant Name">
       <button onclick="getRoute()">Get Route</button>  
         
@@ -56,7 +59,7 @@
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
         } else { 
-          x.innerHTML = "Geolocation is not supported by this browser.";
+          document.getElementById("output").innerHTML = "Geolocation is not supported by this browser.";
         }
       }
       
@@ -68,7 +71,7 @@
         var temp = "https://www.google.com/maps/place/" + lat + "," + lon
         var result = "MAP".link(temp)
         
-        x.innerHTML = "Your latitude is " + lat + " and your longitude is " + lon + ". " + result  
+        document.getElementById("output").innerHTML = "Your latitude is " + lat + " and your longitude is " + lon + ". " + result  
       }
       
           var numPeople = 0
@@ -76,17 +79,24 @@
           var totalLon = 0
           var averageLat = 0
           var averageLon = 0
+          var personArray = []
+          var latArray = []
+          var lonArray = []
       function getMidpoint(){
         numPeople += 1
+        personArray.push(document.getElementById("name").value)
+        latArray.push(Number(document.getElementById("latitude").value))
+        lonArray.push(Number(document.getElementById("longitude").value))
+
         totalLat += Number(document.getElementById("latitude").value)
         totalLon += Number(document.getElementById("longitude").value)
         averageLat = totalLat / numPeople
         averageLon = totalLon / numPeople
         var temp = "https://www.google.com/maps/place/" + averageLat + "," + averageLon
         var result = "Map".link(temp)
-        var temp2 = "https://www.google.com/maps/search/Restaurants/@" + averageLat + "," + averageLon + ",Restaurants"
+        var temp2 = "https://www.google.com/maps/search/Restaurants/@" + averageLat + "," + averageLon + ",13z/data=!3m1!4b1!4m7!2m6!3m5!1sRestaurants!"
         var result2 = "Nearby Restaurants".link(temp2)
-        document.getElementById("total").innerHTML = "Your average latitude is " + averageLat + ". Your average longitude is " + averageLon + ". " + result + "       " + result2
+        document.getElementById("total").innerHTML = personArray + "Your " + numPeople + "-person group has an average latitude of " + averageLat + " and an average longitude of " + averageLon + ". " + result + "       " + result2
       }
           
           
@@ -101,13 +111,14 @@
             str2 += str.charAt(i)
           }
         }
-            window.open("https://www.google.com/maps/dir/" + lat + ",+" + lon + "/" + str2, '_blank')
+        var a = personArray.indexOf(document.getElementById("name2").value)
+            window.open("https://www.google.com/maps/dir/" + latArray[a] + ",+" + lonArray[a] + "/" + str2, '_blank')
       
       }
       </script>
       
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <p id="root"></p>
     <script src="../src/Javascript/Test.js"></script>
     <!--
       This HTML file is a template.
