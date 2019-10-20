@@ -27,6 +27,85 @@
     <title>React App</title>
   </head>
   <body>
+
+
+
+      <p>Click the button to get your coordinates.</p>
+
+      <button onclick="getLocation()">Get Coordinates</button>
+      
+      <p id="demo"></p>
+        
+      <button onclick="getMidpoint()">Get Midpoint</button>
+      <input type="number" name="latitude" id="latitude" placeholder="latitude">
+      <input type="number" name="longitude" id="longitude" placeholder="longitude">
+        <textbox id="total"></textbox>
+      
+        <div>
+      <input type = "string" name = "destination" id="destination" placeholder="Restaurant Name">
+      <button onclick="getRoute()">Get Route</button>  
+        
+        
+        <script>
+      var x = document.getElementById("demo");
+          
+      var lat = 0
+      var lon = 0
+      
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else { 
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      
+      function showPosition(position) {
+        lat = position.coords.latitude
+        lon = position.coords.longitude
+        
+        var latlon = position.coords.latitude + "," + position.coords.longitude;
+        var temp = "https://www.google.com/maps/place/" + lat + "," + lon
+        var result = "MAP".link(temp)
+        
+        x.innerHTML = "Your latitude is " + lat + " and your longitude is " + lon + ". " + result  
+      }
+      
+          var numPeople = 0
+          var totalLat = 0
+          var totalLon = 0
+          var averageLat = 0
+          var averageLon = 0
+      function getMidpoint(){
+        numPeople += 1
+        totalLat += Number(document.getElementById("latitude").value)
+        totalLon += Number(document.getElementById("longitude").value)
+        averageLat = totalLat / numPeople
+        averageLon = totalLon / numPeople
+        var temp = "https://www.google.com/maps/place/" + averageLat + "," + averageLon
+        var result = "Map".link(temp)
+        var temp2 = "https://www.google.com/maps/search/Restaurants/@" + averageLat + "," + averageLon + ",Restaurants"
+        var result2 = "Nearby Restaurants".link(temp2)
+        document.getElementById("total").innerHTML = "Your average latitude is " + averageLat + ". Your average longitude is " + averageLon + ". " + result + "       " + result2
+      }
+          
+          
+      function getRoute(){
+        var str = document.getElementById("destination").value
+        var str2 = ""
+        for (var i = 0; i < str.length; i++){
+          if (str.charAt(i) == " "){
+            str2 += "+"
+          }
+          else{
+            str2 += str.charAt(i)
+          }
+        }
+            window.open("https://www.google.com/maps/dir/" + lat + ",+" + lon + "/" + str2, '_blank')
+      
+      }
+      </script>
+      
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script src="../src/Javascript/Test.js"></script>
